@@ -1,0 +1,23 @@
+# kubelt/pkg/linkstore/BUILD.bazel
+
+load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix kubelt.com/pkg/linkstore
+# gazelle:proto disable
+gazelle(name = "gazelle")
+
+go_library(
+    name = "linkstore",
+    srcs = ["linkstore.go"],
+    importpath = "kubelt.com/pkg/linkstore",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_ipfs_go_block_format//:go-block-format",
+        "@com_github_ipfs_go_cid//:go-cid",
+        "@com_github_ipld_go_car//:go-car",
+        "@com_github_ipld_go_ipld_prime_v12//:go-ipld-prime",
+        "@com_github_ipld_go_ipld_prime_v12//linking/cid",
+        "@com_github_ipld_go_ipld_prime_v12//storage",
+    ],
+)
