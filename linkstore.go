@@ -20,18 +20,18 @@ import (
 // A "StorageLinkSystem" is a "LinkSystem" with format architecture storage duct
 // taped to it so, eg, it can be written to carfiles.
 type StorageLinkSystem struct {
-    ipld.LinkSystem
+	ipld.LinkSystem
 	ReadStore  carv1.ReadStore
 	WriteStore carv1.Store
 }
 
 // Create a new storage link system with no attached storage.
 func NewStorageLinkSystemWithNoStorage() *StorageLinkSystem {
-    return &StorageLinkSystem{
-        cidlink.DefaultLinkSystem(),
-        nil,
-        nil,
-    }
+	return &StorageLinkSystem{
+		cidlink.DefaultLinkSystem(),
+		nil,
+		nil,
+	}
 }
 
 // Creates a new StorageLinkSystem with supplied storage.
