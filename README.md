@@ -14,7 +14,7 @@ $ go get github.com/proofzero/go-ipld-linkstore
 
 # Usage
 
-See tests:
+An attempt has been made to over-comment the code. See also the tests:
 
 ```bash
 $ go test
