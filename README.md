@@ -7,9 +7,9 @@
 [![platforms](https://img.shields.io/badge/platforms-linux|windows|macos-inactive.svg)]()
 [![Slack](https://img.shields.io/badge/slack-@kubelt-FD4E83.svg)](https://kubelt.slack.com)
 
-A small module that makes IPLD LinkSystems ("prime node architecture") easy to
-use with carfiles and other, older modules that use the legacy "format node"
-architecture.
+A small module that makes IPLD LinkSystems (newer, "prime node" architecture)
+easy to use with carfiles and other, older modules that use the legacy "format
+node" architecture.
 
 # Install
 
