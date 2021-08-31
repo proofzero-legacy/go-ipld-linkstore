@@ -1,4 +1,5 @@
-// Adds IPLD format architecture support to a prime architecture link system.
+// Package linkstore adds IPLD format architecture storage support to a prime
+// architecture link system so that it can be used more easily, eg, with carfiles.
 package linkstore
 
 import (
@@ -17,15 +18,16 @@ import (
 	"github.com/ipld/go-ipld-prime/storage"
 )
 
-// A "StorageLinkSystem" is a "LinkSystem" with format architecture storage duct
-// taped to it so, eg, it can be written to carfiles.
+// StorageLinkSystem is a LinkSystem with format architecture storage duct taped
+// to it so, eg, it can be written to carfiles.
 type StorageLinkSystem struct {
 	ipld.LinkSystem
 	ReadStore  carv1.ReadStore
 	WriteStore carv1.Store
 }
 
-// Create a new storage link system with no attached storage.
+// NewStorageLinkSystemWithNoStorage creates a new storage link system with no
+// attached storage.
 func NewStorageLinkSystemWithNoStorage() *StorageLinkSystem {
 	return &StorageLinkSystem{
 		cidlink.DefaultLinkSystem(),
@@ -34,19 +36,21 @@ func NewStorageLinkSystemWithNoStorage() *StorageLinkSystem {
 	}
 }
 
-// Creates a new StorageLinkSystem with supplied storage.
+// NewStorageLinkSystemWithStorage creates a new StorageLinkSystem with supplied
+// storage.
 func NewStorageLinkSystemWithStorage(store storage.Memory) *StorageLinkSystem {
 	return NewStorageLinkSystemWithNoStorage().ConfigureStorage(store)
 }
 
-// Creates a new StorageLinkSystem with new storage.
+// NewStorageLinkSystemWithNewStorage creates a new StorageLinkSystem with new
+// storage.
 func NewStorageLinkSystemWithNewStorage() *StorageLinkSystem {
 	var store = storage.Memory{}
 	return NewStorageLinkSystemWithStorage(store)
 }
 
-// Configure link system storage for prime architecture nodes and set up the
-// duct tape storage for format architecture nodes.
+// ConfigureStorage configures link system storage for prime architecture nodes
+// and sets up the duct tape storage for format architecture nodes.
 func (slinks *StorageLinkSystem) ConfigureStorage(store storage.Memory) *StorageLinkSystem {
 	// Standard link system storage handler setup:
 	slinks.LinkSystem.StorageWriteOpener = (&store).OpenWrite
