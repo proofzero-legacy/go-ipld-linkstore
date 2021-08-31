@@ -1,11 +1,5 @@
+// Adds IPLD format architecture support to a prime architecture link system.
 package linkstore
-
-////////////////////////////////////////////////////////////////////////////////
-//
-// This module contains the duct tape that adds format architecture support
-// to the passed prime architecture link system.
-//
-////////////////////////////////////////////////////////////////////////////////
 
 import (
 	"io/ioutil"
@@ -59,7 +53,7 @@ func (slinks *StorageLinkSystem) ConfigureStorage(store storage.Memory) *Storage
 	slinks.LinkSystem.StorageReadOpener = (&store).OpenRead
 
 	// IMPORTANT: These lines make the new prime architecture linksystem store
-	// (the memory store, above) compatible with the old format architecture
+	// (an IPLD memory store) compatible with the old format architecture
 	// block-based store that the v1 carfile API expects.
 
 	// Wrap a "prime architecture" (see below) BlockReadOpener interface in our
