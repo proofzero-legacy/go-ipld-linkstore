@@ -17,7 +17,7 @@ $ go get github.com/proofzero/go-ipld-linkstore
 See tests:
 
 ```bash
-go test
+$ go test
 ```
 
 # Contact
