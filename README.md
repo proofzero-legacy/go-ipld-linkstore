@@ -12,6 +12,14 @@ At a shell within your go module:
 $ go get github.com/proofzero/go-ipld-linkstore
 ```
 
+# Build Instructions
+
+```bash
+$ go build
+```
+
+Bazel build coming soon.
+
 # Usage
 
 An attempt has been made to over-comment the code. See also the tests:
