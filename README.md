@@ -38,3 +38,8 @@ An attempt has been made to over-comment the code. See also the tests:
 ```bash
 go test
 ```
+
+```bash
+bazel test ...
+```
+

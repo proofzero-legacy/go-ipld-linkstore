@@ -1,9 +1,10 @@
 package linkstore
 
 import (
-	"github.com/ipld/go-ipld-prime"
 	"os"
+    "fmt"
 	"testing"
+	"github.com/ipld/go-ipld-prime"
 	"github.com/ipld/go-ipld-prime/linking"
 	"github.com/ipld/go-ipld-prime/linking/cid"
 	. "github.com/warpfork/go-wish"
@@ -16,6 +17,7 @@ func TestMain(m *testing.M) {
 
 func TestNewStorage(t *testing.T) {
 	t.Run("Writing v1 carfile and wrapping to v2.", func(t *testing.T) {
+        fmt.Println("Writing v1 carfile and wrapping to v2!")
 		var testBlockReadOpener ipld.BlockReadOpener
 		var testBlockWriteOpener ipld.BlockWriteOpener
 		var testLinkSystem linking.LinkSystem

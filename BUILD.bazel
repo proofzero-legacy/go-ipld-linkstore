@@ -1,6 +1,6 @@
 # go-ipld-linkstore/BUILD.bazel
 
-load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library")
+load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library", "go_test")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
 # gazelle:prefix github.com/proofzero/go-ipld-linkstore
@@ -20,5 +20,20 @@ go_library(
         "@com_github_ipld_go_ipld_prime_v12//linking",
         "@com_github_ipld_go_ipld_prime_v12//linking/cid",
         "@com_github_ipld_go_ipld_prime_v12//storage",
+    ],
+)
+
+go_test(
+    name = "linkstore_test",
+    srcs = ["linkstore.go", "example_test.go"],
+    deps = [
+        "@com_github_ipfs_go_block_format//:go-block-format",
+        "@com_github_ipfs_go_cid//:go-cid",
+        "@com_github_ipld_go_car//:go-car",
+        "@com_github_ipld_go_ipld_prime_v12//:go-ipld-prime",
+        "@com_github_ipld_go_ipld_prime_v12//linking",
+        "@com_github_ipld_go_ipld_prime_v12//linking/cid",
+        "@com_github_ipld_go_ipld_prime_v12//storage",
+        "@com_github_warpfork_go_wish//:go-wish",
     ],
 )
