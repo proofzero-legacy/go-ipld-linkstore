@@ -16,21 +16,25 @@ node" architecture.
 At a shell within your go module:
 
 ```bash
-$ go get github.com/proofzero/go-ipld-linkstore
+go get github.com/proofzero/go-ipld-linkstore
 ```
 
 # Build Instructions
 
 ```bash
-$ go build
+go build
 ```
 
-Bazel build coming soon.
+Bazel build:
+
+```bash
+bazel build ...
+```
 
 # Usage
 
 An attempt has been made to over-comment the code. See also the tests:
 
 ```bash
-$ go test
+go test
 ```

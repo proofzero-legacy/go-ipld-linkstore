@@ -1,16 +1,16 @@
-# kubelt/pkg/linkstore/BUILD.bazel
+# go-ipld-linkstore/BUILD.bazel
 
 load("@io_bazel_rules_go//go:def.bzl", "go_embed_data", "go_library")
 load("@bazel_gazelle//:def.bzl", "gazelle")
 
-# gazelle:prefix kubelt.com/pkg/linkstore
+# gazelle:prefix github.com/proofzero/go-ipld-linkstore
 # gazelle:proto disable
 gazelle(name = "gazelle")
 
 go_library(
     name = "linkstore",
     srcs = ["linkstore.go"],
-    importpath = "kubelt.com/pkg/linkstore",
+    importpath = "github.com/proofzero/go-ipld-linkstore",
     visibility = ["//visibility:public"],
     deps = [
         "@com_github_ipfs_go_block_format//:go-block-format",

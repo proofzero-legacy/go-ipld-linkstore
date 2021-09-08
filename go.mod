@@ -1,4 +1,4 @@
-module kubelt.com/pkg/linkstore
+module github.com/proofzero/go-ipld-linkstore
 
 go 1.17
 
@@ -7,6 +7,7 @@ require (
 	github.com/ipfs/go-cid v0.1.0
 	github.com/ipld/go-car v0.3.1
 	github.com/ipld/go-ipld-prime v0.12.0
+	github.com/warpfork/go-wish v0.0.0-20200122115046-b9ea61034e4a
 )
 
 require (
