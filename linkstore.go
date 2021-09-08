@@ -14,23 +14,24 @@ import (
 
 	// IPLD Prime Architecture
 	"github.com/ipld/go-ipld-prime"
-	cidlink "github.com/ipld/go-ipld-prime/linking/cid"
+	"github.com/ipld/go-ipld-prime/linking"
+	"github.com/ipld/go-ipld-prime/linking/cid"
 	"github.com/ipld/go-ipld-prime/storage"
 )
 
 // StorageLinkSystem is a LinkSystem with format architecture storage duct taped
 // to it so, eg, it can be written to carfiles.
 type StorageLinkSystem struct {
-	ipld.LinkSystem
+	linking.LinkSystem
 	ReadStore  carv1.ReadStore
 	WriteStore carv1.Store
 }
 
 // NewStorageLinkSystemWithNoStorage creates a new storage link system with no
 // attached storage.
-func NewStorageLinkSystemWithNoStorage() *StorageLinkSystem {
+func NewStorageLinkSystemWithNoStorage(ls linking.LinkSystem) *StorageLinkSystem {
 	return &StorageLinkSystem{
-		cidlink.DefaultLinkSystem(),
+		ls,
 		nil,
 		nil,
 	}
@@ -38,15 +39,14 @@ func NewStorageLinkSystemWithNoStorage() *StorageLinkSystem {
 
 // NewStorageLinkSystemWithStorage creates a new StorageLinkSystem with supplied
 // storage.
-func NewStorageLinkSystemWithStorage(store storage.Memory) *StorageLinkSystem {
-	return NewStorageLinkSystemWithNoStorage().ConfigureStorage(store)
+func NewStorageLinkSystemWithStorage(ls linking.LinkSystem, store storage.Memory) *StorageLinkSystem {
+	return NewStorageLinkSystemWithNoStorage(ls).ConfigureStorage(store)
 }
 
 // NewStorageLinkSystemWithNewStorage creates a new StorageLinkSystem with new
 // storage.
-func NewStorageLinkSystemWithNewStorage() *StorageLinkSystem {
-	var store = storage.Memory{}
-	return NewStorageLinkSystemWithStorage(store)
+func NewStorageLinkSystemWithNewStorage(ls linking.LinkSystem) *StorageLinkSystem {
+	return NewStorageLinkSystemWithStorage(ls, storage.Memory{})
 }
 
 // ConfigureStorage configures link system storage for prime architecture nodes
@@ -127,7 +127,7 @@ func (rs readStore) Get(c cid.Cid) (blocks.Block, error) {
 	link := cidlink.Link{Cid: c}
 
 	// Get the io.Reader for the byte array representation of the node.
-	r, err := rs(ipld.LinkContext{}, link)
+	r, err := rs(linking.LinkContext{}, link)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ func (ws writeStore) Put(b blocks.Block) error {
 	// > the io.Writer returned from a BlockWriteOpener will be writing a new tempfile,
 	// > and when the BlockWriteCommiter is called, it will flush the writes
 	// > and then use a rename operation to place the tempfile in a permanent path based the Link.)
-	writer, committer, err := ws(ipld.LinkContext{})
+	writer, committer, err := ws(linking.LinkContext{})
 	if err != nil {
 		return err
 	}
