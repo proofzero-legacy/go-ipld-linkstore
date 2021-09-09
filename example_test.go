@@ -109,8 +109,6 @@ func TestNewStorage(t *testing.T) {
 			panic(err)
 		}
 
-		// TODO: Test reading back carfiles into StorageLinkSystem.
-
 		// Make a new memory store so we're not loading from cache. Overwrite
 		// the link system's storage handlers to point at the new store.
 		var fresh_store = storage.Memory{}
@@ -147,21 +145,31 @@ func TestNewStorage(t *testing.T) {
 		}
 
 		world, err := world_node.AsString()
-		if err != nil {
-			panic(err)
-		}
-
+		Wish(t, err, ShouldEqual, nil)
 		Wish(t, world, ShouldEqual, "world")
 
 		// Remove the v1 carfile.
-		if err := os.Remove(v1carfilename); err != nil {
-			panic(err)
-		}
+		err = os.Remove(v1carfilename)
+		Wish(t, err, ShouldEqual, nil)
+
+		// Load carv2
+		cr, err := carv2.OpenReader(v2carfilename)
+		Wish(t, err, ShouldEqual, nil)
+		defer func() {
+			if err := cr.Close(); err != nil {
+				panic(err)
+			}
+		}()
+
+		// Do we get back the same root we saved (after type coercsion)?
+		roots, err := cr.Roots()
+		Wish(t, err, ShouldEqual, nil)
+		Wish(t, roots[0], ShouldBeSameTypeAs, root.(cidlink.Link).Cid)
+		Wish(t, roots[0], ShouldEqual, root.(cidlink.Link).Cid)
 
 		// Remove the v2 carfile.
-		if err := os.Remove(v2carfilename); err != nil {
-			panic(err)
-		}
+		err = os.Remove(v2carfilename)
+		Wish(t, err, ShouldEqual, nil)
 	})
 }
 
