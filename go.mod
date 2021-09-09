@@ -6,7 +6,9 @@ require (
 	github.com/ipfs/go-block-format v0.0.3
 	github.com/ipfs/go-cid v0.1.0
 	github.com/ipld/go-car v0.3.1
+	github.com/ipld/go-car/v2 v2.0.2
 	github.com/ipld/go-ipld-prime v0.12.0
+	github.com/multiformats/go-multicodec v0.3.0
 	github.com/warpfork/go-wish v0.0.0-20200122115046-b9ea61034e4a
 )
 
@@ -27,7 +29,6 @@ require (
 	github.com/ipfs/go-merkledag v0.3.2 // indirect
 	github.com/ipfs/go-metrics-interface v0.0.1 // indirect
 	github.com/ipfs/go-verifcid v0.0.1 // indirect
-	github.com/ipld/go-car/v2 v2.0.2 // indirect
 	github.com/ipld/go-codec-dagpb v1.2.0 // indirect
 	github.com/jbenet/goprocess v0.1.3 // indirect
 	github.com/klauspost/cpuid/v2 v2.0.8 // indirect
@@ -39,7 +40,6 @@ require (
 	github.com/multiformats/go-base32 v0.0.3 // indirect
 	github.com/multiformats/go-base36 v0.1.0 // indirect
 	github.com/multiformats/go-multibase v0.0.3 // indirect
-	github.com/multiformats/go-multicodec v0.3.0 // indirect
 	github.com/multiformats/go-multihash v0.0.15 // indirect
 	github.com/multiformats/go-varint v0.0.6 // indirect
 	github.com/opentracing/opentracing-go v1.1.0 // indirect
