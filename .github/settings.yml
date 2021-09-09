@@ -3,9 +3,9 @@
 # https://github.com/probot/settings/blob/master/README.md
 _extends: "cloud"
 repository:
-  name: "kmdr"
-  topics: ["kubelt", "kmdr", "ipfs", "data", "data science", "data engineering"]
-  description: "The CLI for developing, collaborating, and delivering data-centric applications."
+  name: "go-ipld-linkstore"
+  topics: ["kubelt", "ipld", "ipfs", "data", "data science", "data engineering", "linked data"]
+  description: "An IPLD LinkSystem that provides block format support for prime node APIs (primarily carfiles)."
   allow_merge_commits: false
   allow_rebase_merge: false
   allow_squash_merge: true
@@ -20,7 +20,7 @@ repository:
   vulnerability_alerts: true
 
 branches:
-  - name: master
+  - name: main
     protection:
       enforce_admins: true
       required_signed_commits: false
