@@ -9,3 +9,6 @@
 
 # VS Code
 .vscode
+
+# Test Output
+*.car
