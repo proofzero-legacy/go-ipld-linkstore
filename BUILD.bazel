@@ -26,6 +26,7 @@ go_library(
 go_test(
     name = "linkstore_test",
     srcs = ["linkstore.go", "example_test.go"],
+    timeout = "short",
     deps = [
         "@com_github_ipfs_go_block_format//:go-block-format",
         "@com_github_ipfs_go_cid//:go-cid",

@@ -3,7 +3,6 @@ package linkstore
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"path"
 	"testing"
@@ -37,23 +36,25 @@ func TestMain(m *testing.M) {
 	os.Exit(failedTestCount)
 }
 
-func TestNewStorage(t *testing.T) {
+func TestWritingCarsWithStorageLinkSystem(t *testing.T) {
+	var testBlockReadOpener ipld.BlockReadOpener
+	var testBlockWriteOpener ipld.BlockWriteOpener
+	var testLinkSystem linking.LinkSystem
+
+	// Filename for carfile wirting tests. Will end up begin written as, eg,
+	// carfile.v1.car, carfile.v2.car, ie, with version and ".car" appended.
+	// We don't use os.CreateTemp here, for consistency, because the carfile
+	// v2 API handles file creation.
+	fileprefix := "carfile"
+
+	// Note: os.TempDir() doesn't guarantee existence or writability of the
+	// returned location. This might cause tests to fail. TODO: Check.
+	v1carfilename := path.Join(os.TempDir(), fileprefix+".v1"+".car")
+	v2carfilename := path.Join(os.TempDir(), fileprefix+".v2"+".car")
+
+	var root datamodel.Link
+
 	t.Run("Writing v1 carfile and wrapping to v2.", func(t *testing.T) {
-		var testBlockReadOpener ipld.BlockReadOpener
-		var testBlockWriteOpener ipld.BlockWriteOpener
-		var testLinkSystem linking.LinkSystem
-
-		// Filename for carfile wirting tests. Will end up begin written as, eg,
-		// carfile.v1.car, carfile.v2.car, ie, with version and ".car" appended.
-		// We don't use os.CreateTemp here, for consistency, because the carfile
-		// v2 API handles file creation.
-		fileprefix := "carfile"
-
-		// Note: os.TempDir() doesn't guarantee existence or writability of the
-		// returned location. This might cause tests to fail. TODO: Check.
-		v1carfilename := path.Join(os.TempDir(), fileprefix+".v1"+".car")
-		v2carfilename := path.Join(os.TempDir(), fileprefix+".v2"+".car")
-
 		// Create our store link system, the system under test, and make some
 		// assertions about its initialized state.
 		storageLinkSystem := NewStorageLinkSystemWithNewStorage(cidlink.DefaultLinkSystem())
@@ -75,7 +76,7 @@ func TestNewStorage(t *testing.T) {
 		}}
 
 		// Store the test node into the link system's embedded memory store.
-		root := storageLinkSystem.MustStore(linking.LinkContext{}, lp, n)
+		root = storageLinkSystem.MustStore(linking.LinkContext{}, lp, n)
 
 		// Create a selective car (that selects everything) from the LinkSystem.
 		sc := carv1.NewSelectiveCar(context.Background(),
@@ -90,10 +91,7 @@ func TestNewStorage(t *testing.T) {
 
 		// Create the file on disk that will store the car representation.
 		carfile_v1, err := os.Create(v1carfilename)
-		if err != nil {
-			fmt.Printf("err opening file: %v\n", err)
-			panic(err)
-		}
+		Wish(t, err, ShouldEqual, nil)
 
 		// Write the selective carfile from the memory store to disk.
 		sc.Write(carfile_v1)
@@ -104,58 +102,57 @@ func TestNewStorage(t *testing.T) {
 		// This is done for convenience. Currently carv1 is used directly by the
 		// `ipfs dag import <file>` command, but carv2 is the future. There are more
 		// verbose ways of creating carv2 files we're not going to delve into yet.
-		if err := carv2.WrapV1File(v1carfilename, v2carfilename); err != nil {
-			fmt.Printf("err wrapping carfile: %v\n", err)
-			panic(err)
-		}
+		err = carv2.WrapV1File(v1carfilename, v2carfilename)
+		Wish(t, err, ShouldEqual, nil)
+	})
 
+	t.Run("Reading v1 carfile.", func(t *testing.T) {
 		// Make a new memory store so we're not loading from cache. Overwrite
-		// the link system's storage handlers to point at the new store.
+		// the link system's storage handlers to point at the new store. For the
+		// sake of exercising the library we use ConfigureStorage to set us up.
+		storageLinkSystem := NewStorageLinkSystemWithNoStorage(cidlink.DefaultLinkSystem())
 		var fresh_store = storage.Memory{}
 		storageLinkSystem.ConfigureStorage(fresh_store)
 
+		// Different init method, same assertions as above.
+		Wish(t, storageLinkSystem.ReadStore, ShouldBeSameTypeAs, readStore(testBlockReadOpener))
+		Wish(t, storageLinkSystem.WriteStore, ShouldBeSameTypeAs, writeStore(testBlockWriteOpener))
+		Wish(t, storageLinkSystem.LinkSystem, ShouldBeSameTypeAs, testLinkSystem)
+
+		// Open the carfile (os.File) so we can read it in.
 		read_carfile_v1, err := os.Open(v1carfilename)
-		if err != nil {
-			fmt.Printf("err opening file: %v\n", err)
-			panic(err)
-		}
+		Wish(t, err, ShouldEqual, nil)
 
-		// Now restore the blocks in the link system from the file.
+		// Now restore the blocks in the link system from disk.
 		_, err = carv1.LoadCar(storageLinkSystem.WriteStore, read_carfile_v1)
-		if err != nil {
-			fmt.Printf("carfile LoadCar error: %v\n", err)
-			panic(err)
-		}
+		Wish(t, err, ShouldEqual, nil)
 
-		// Load the fluent reflection from the link system.
+		// Load the fluent model from the link system.
 		node_from_carfile, err := storageLinkSystem.Load(
 			ipld.LinkContext{},
 			root,
 			basicnode.Prototype.Any,
 		)
-		if err != nil {
-			fmt.Printf("linksystem load error: %v\n", err)
-			panic(err)
-		}
+		Wish(t, err, ShouldEqual, nil)
 
-		// De-reference the fluent reflection.
+		// Retrieve our hello -> "world" message.
 		world_node, err := node_from_carfile.LookupByString("hello")
-		if err != nil {
-			panic(err)
-		}
-
+		Wish(t, err, ShouldEqual, nil)
 		world, err := world_node.AsString()
 		Wish(t, err, ShouldEqual, nil)
 		Wish(t, world, ShouldEqual, "world")
+	})
 
-		// Remove the v1 carfile.
-		err = os.Remove(v1carfilename)
+	t.Run("Deleting v1 carfile.", func(t *testing.T) {
+		err := os.Remove(v1carfilename)
 		Wish(t, err, ShouldEqual, nil)
+	})
 
-		// Load carv2
+	t.Run("Reading v2 carfile.", func(t *testing.T) {
 		cr, err := carv2.OpenReader(v2carfilename)
 		Wish(t, err, ShouldEqual, nil)
 		defer func() {
+			// Feels weird to defer a Wish here, so leaving the panic.
 			if err := cr.Close(); err != nil {
 				panic(err)
 			}
@@ -166,9 +163,10 @@ func TestNewStorage(t *testing.T) {
 		Wish(t, err, ShouldEqual, nil)
 		Wish(t, roots[0], ShouldBeSameTypeAs, root.(cidlink.Link).Cid)
 		Wish(t, roots[0], ShouldEqual, root.(cidlink.Link).Cid)
+	})
 
-		// Remove the v2 carfile.
-		err = os.Remove(v2carfilename)
+	t.Run("Deleting v2 carfile.", func(t *testing.T) {
+		err := os.Remove(v2carfilename)
 		Wish(t, err, ShouldEqual, nil)
 	})
 }
