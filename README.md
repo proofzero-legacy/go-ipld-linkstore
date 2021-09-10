@@ -1,9 +1,9 @@
 # go-ipld-linkstore
 
-[![Go Reference](https://pkg.go.dev/badge/kubelt.com/go-ipld-linkstore.svg)](https://pkg.go.dev/kubelt.com/go-ipld-linkstore)
+[![Go Reference](https://pkg.go.dev/badge/github.com/proofzero/go-ipld-linkstore.svg)](https://pkg.go.dev/github.com/proofzero/go-ipld-linkstore)
 [![Go](https://img.shields.io/github/go-mod/go-version/proofzero/go-ipld-linkstore)](https://golang.org/dl/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/proofzero/go-ipld-linkstore)](https://goreportcard.com/report/github.com/proofzero/go-ipld-linkstore)
-[![build](https://github.com/proofzero/go-ipld-linkstore/actions/workflows/bazel.yaml/badge.svg)]()
+![build](https://github.com/proofzero/go-ipld-linkstore/actions/workflows/bazel.yaml/badge.svg)
 [![Slack](https://img.shields.io/badge/slack-@kubelt-FD4E83.svg)](https://kubelt.slack.com)
 
 A small module that makes IPLD LinkSystems (newer, "prime node" architecture)
