@@ -24,12 +24,6 @@ go get github.com/proofzero/go-ipld-linkstore
 go build
 ```
 
-Bazel build:
-
-```bash
-bazel build ...
-```
-
 # Usage
 
 Pseudo-golang for quickly and easily writing a v1 carfile full of prime nodes:
@@ -55,8 +49,4 @@ An attempt has been made to over-comment the code. See especially `example_test.
 
 ```bash
 go test
-```
-
-```bash
-bazel test ...
 ```
