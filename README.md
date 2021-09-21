@@ -4,7 +4,7 @@
 [![Go](https://img.shields.io/github/go-mod/go-version/proofzero/go-ipld-linkstore)](https://golang.org/dl/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/proofzero/go-ipld-linkstore)](https://goreportcard.com/report/github.com/proofzero/go-ipld-linkstore)
 ![build](https://github.com/proofzero/go-ipld-linkstore/actions/workflows/build.yaml/badge.svg)
-![matrix](https://img.shields.io/matrix/lobby:matrix.kubelt.com?label=matrix&server_fqdn=matrix.kubelt.com)
+[![matrix](https://img.shields.io/matrix/lobby:matrix.kubelt.com?label=matrix&server_fqdn=matrix.kubelt.com)](https://matrix.to/#/#lobby:matrix.kubelt.com)
 [![Slack](https://img.shields.io/badge/slack-@kubelt-FD4E83.svg)](https://kubelt.slack.com)
 
 A small module that makes IPLD LinkSystems (newer, "prime node" architecture)
@@ -51,3 +51,16 @@ An attempt has been made to over-comment the code. See especially `example_test.
 ```bash
 go test
 ```
+
+# Contribute
+
+We would appreciate your help to make this a useful utility. For code contributions, please send a pull request. First outlining your proposed change in an issue or discussion thread to get feedback from other developers is a good idea for anything but small changes. Other ways to contribute include:
+
+- making a feature request
+- reporting a bug
+- writing a test
+- adding some documentation
+- providing feedback on the project direction
+- reporting your experience using it
+
+For most things we will use GitHub issues and discussions, but feel free to join the project [Matrix room](https://matrix.to/#/#lobby:matrix.kubelt.com) to chat or ask questions.
